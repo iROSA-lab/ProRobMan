@@ -35,24 +35,39 @@ def project_to_cube(axis, target):
     bpy.context.object.modifiers["Shrinkwrap"].use_positive_direction = True
     bpy.context.object.modifiers["Shrinkwrap"].wrap_mode = 'OUTSIDE_SURFACE'
 
+def update_location(location, projection_axis):
+    location=list(location)
+    if location[projection_axis]>0:
+        location[projection_axis]+=0.0001
+    else:
+        location[projection_axis]-=0.0001
+    location=tuple(location)
+    return location
+
 wood=define_material('Wood', 0.65, 0.45, 0.28)
 def paint_surface(id, color, letter, location, rotation, projection_axis):
     bpy.ops.mesh.primitive_plane_add(size=0.045, location=location, rotation=rotation)
     bpy.context.active_object.data.materials.append(color)
     bpy.context.active_object.name=f'plane_{id}'
-    project_to_cube(projection_axis, 'cube')
-    location=list(location)
-    if location[projection_axis]>0:
-        location[projection_axis]+=0.0002
-    else:
-        location[projection_axis]-=0.0002
-    location=tuple(location)
+    location=update_location(location, projection_axis)
+#    project_to_cube(projection_axis, 'cube')
     bpy.ops.mesh.primitive_circle_add(radius=0.02, fill_type='TRIFAN', location=location, rotation=rotation)
     bpy.context.active_object.data.materials.append(wood)
-    project_to_cube(projection_axis, f'plane_{id}')
+    location=update_location(location, projection_axis)
+#    project_to_cube(projection_axis, f'plane_{id}')
+    bpy.ops.object.text_add(radius=0.02, location=location, rotation=rotation)
+    bpy.context.active_object.data.materials.append(color)
+    bpy.context.active_object.name=f'Text{id}'
+    bpy.context.active_object.data.name=f'Text{id}'
+    bpy.ops.object.editmode_toggle()
+    bpy.data.objects[f'Text{id}'].data.body = 'A'
+    bpy.context.object.data.align_x = 'CENTER'
+    bpy.context.object.data.align_y = 'CENTER'
+    bpy.ops.object.editmode_toggle()
+
 
 def generate_cube():
-    bpy.ops.mesh.primitive_cube_add(size=0.045)
+    bpy.ops.mesh.primitive_cube_add(size=0.045, location=(0, 0, 0), rotation=(0.0, 0, 0))
     bpy.context.active_object.name='cube'
     # paint the surfaces
     red=define_material('Red', 1, 0, 0)
@@ -64,9 +79,6 @@ def generate_cube():
     green=define_material('Green', 0, 0, 1)
     paint_surface(4, green, 'A', location=(0.0226, 0, 0), rotation=( 0, 1.5708, 0), projection_axis=0)
     paint_surface(5, green, 'A', location=(-0.0226, 0, 0), rotation=( 0, 1.5708, 0), projection_axis=0)
-#    # draw letter
-#    bpy.ops.object.text_add(radius=0.02, location=(0, 0, 0.02275), rotation=(0.0, 0, 0))
-#    bpy.context.active_object.data.materials.append(red)
 
 clear_the_scene()
 generate_cube()
