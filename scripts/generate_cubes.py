@@ -55,7 +55,7 @@ def paint_surface(id, color, location, rotation, projection_axis):
     bpy.context.active_object.data.materials.append(wood)
     location=update_location(location, projection_axis)
 #    project_to_cube(projection_axis, f'plane_{id}')
-    bpy.ops.object.text_add(radius=0.038, location=location, rotation=rotation)
+    bpy.ops.object.text_add(radius=0.035, location=location, rotation=rotation)
     bpy.context.active_object.data.materials.append(color)
     bpy.context.active_object.name=f'Text{id}'
 
@@ -89,4 +89,4 @@ for i in range(28):
     generate_cube()
     for i in range(6):
         update_text(i,letters[i])
-    bpy.data.objects['Text5']
+    bpy.data.objects.remove(bpy.data.objects['Text5'], do_unlink=True)
