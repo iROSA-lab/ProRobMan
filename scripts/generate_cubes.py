@@ -45,7 +45,7 @@ def update_location(location, projection_axis):
     return location
 
 wood=define_material('Wood', 0.65, 0.45, 0.28)
-def paint_surface(id, color, letter, location, rotation, projection_axis):
+def paint_surface(id, color, location, rotation, projection_axis):
     bpy.ops.mesh.primitive_plane_add(size=0.045, location=location, rotation=rotation)
     bpy.context.active_object.data.materials.append(color)
     bpy.context.active_object.name=f'plane_{id}'
@@ -55,30 +55,38 @@ def paint_surface(id, color, letter, location, rotation, projection_axis):
     bpy.context.active_object.data.materials.append(wood)
     location=update_location(location, projection_axis)
 #    project_to_cube(projection_axis, f'plane_{id}')
-    bpy.ops.object.text_add(radius=0.02, location=location, rotation=rotation)
+    bpy.ops.object.text_add(radius=0.038, location=location, rotation=rotation)
     bpy.context.active_object.data.materials.append(color)
     bpy.context.active_object.name=f'Text{id}'
-    bpy.context.active_object.data.name=f'Text{id}'
-    bpy.ops.object.editmode_toggle()
-    bpy.data.objects[f'Text{id}'].data.body = 'A'
-    bpy.context.object.data.align_x = 'CENTER'
-    bpy.context.object.data.align_y = 'CENTER'
-    bpy.ops.object.editmode_toggle()
 
+def update_text(id, letter):
+    bpy.ops.object.editmode_toggle()
+    bpy.data.objects[f'Text{id}'].data.name=f'Text{id}'
+    bpy.data.objects[f'Text{id}'].data.body = letter
+    bpy.data.objects[f'Text{id}'].data.align_x = 'CENTER'
+    bpy.data.objects[f'Text{id}'].data.align_y = 'CENTER'
+    bpy.ops.object.editmode_toggle()
 
 def generate_cube():
     bpy.ops.mesh.primitive_cube_add(size=0.045, location=(0, 0, 0), rotation=(0.0, 0, 0))
     bpy.context.active_object.name='cube'
     # paint the surfaces
     red=define_material('Red', 1, 0, 0)
-    paint_surface(0, red, 'A', location=(0, 0, 0.0226), rotation=(0.0, 0, 0), projection_axis=2)
-    paint_surface(1, red, 'A', location=(0, 0, -0.0226), rotation=(0.0, 0, 0), projection_axis=2)
+    paint_surface(0, red, location=(0, 0, 0.0226), rotation=(0.0, 0, 0), projection_axis=2)
+    paint_surface(1, red, location=(0, 0, -0.0226), rotation=(0.0, 0, 0), projection_axis=2)
     blue=define_material('Blue', 0, 1, 0)
-    paint_surface(2, blue, 'A', location=(0, 0.0226, 0), rotation=(1.5708, 0, 0), projection_axis=1)
-    paint_surface(3, blue, 'A', location=(0, -0.0226, 0), rotation=(1.5708, 0, 0), projection_axis=1)
+    paint_surface(2, blue, location=(0, 0.0226, 0), rotation=(1.5708, 0, 0), projection_axis=1)
+    paint_surface(3, blue, location=(0, -0.0226, 0), rotation=(1.5708, 0, 0), projection_axis=1)
     green=define_material('Green', 0, 0, 1)
-    paint_surface(4, green, 'A', location=(0.0226, 0, 0), rotation=( 0, 1.5708, 0), projection_axis=0)
-    paint_surface(5, green, 'A', location=(-0.0226, 0, 0), rotation=( 0, 1.5708, 0), projection_axis=0)
+    paint_surface(4, green, location=(0.0226, 0, 0), rotation=( 0, 1.5708, 0), projection_axis=0)
+    paint_surface(5, green, location=(-0.0226, 0, 0), rotation=( 0, 1.5708, 0), projection_axis=0)
 
-clear_the_scene()
-generate_cube()
+import numpy as np
+upper_case=np.array(['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'])
+for i in range(28):
+    letters=np.random.choice(upper_case, 6)
+    clear_the_scene()
+    generate_cube()
+    for i in range(6):
+        update_text(i,letters[i])
+    bpy.data.objects['Text5']
