@@ -91,7 +91,7 @@ def generate_cube():
 
 import numpy as np
 upper_case=np.array(['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'])
-for i in range(28):
+for c in range(28):
     letters=np.random.choice(upper_case, 6)
     clear_the_scene()
     generate_cube()
@@ -101,3 +101,4 @@ for i in range(28):
     bpy.context.view_layer.objects.active= bpy.data.objects["cube"]
     bpy.ops.object.select_all(action='SELECT')
     bpy.ops.object.join()
+    bpy.ops.wm.collada_export(filepath=f'meshes/cube_{c}.dae')
