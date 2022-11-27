@@ -55,9 +55,16 @@ def paint_surface(id, color, location, rotation, projection_axis):
     bpy.context.active_object.data.materials.append(wood)
     location=update_location(location, projection_axis)
 #    project_to_cube(projection_axis, f'plane_{id}')
-    bpy.ops.object.text_add(radius=0.035, location=location, rotation=rotation)
+    bpy.ops.object.text_add(radius=0.03, location=location, rotation=rotation)
     bpy.context.active_object.data.materials.append(color)
     bpy.context.active_object.name=f'Text{id}'
+
+def convert_to_mesh(name):
+    obj1=bpy.data.objects[name]
+    for obj2 in bpy.context.scene.objects:
+        obj2.select_set( obj2 == obj1 )
+    bpy.context.view_layer.objects.active=  obj1
+    bpy.ops.object.convert(target="MESH")
 
 def update_text(id, letter):
     bpy.ops.object.editmode_toggle()
@@ -66,6 +73,7 @@ def update_text(id, letter):
     bpy.data.objects[f'Text{id}'].data.align_x = 'CENTER'
     bpy.data.objects[f'Text{id}'].data.align_y = 'CENTER'
     bpy.ops.object.editmode_toggle()
+    convert_to_mesh(f'Text{id}')
 
 def generate_cube():
     bpy.ops.mesh.primitive_cube_add(size=0.045, location=(0, 0, 0), rotation=(0.0, 0, 0))
@@ -90,3 +98,6 @@ for i in range(28):
     for i in range(6):
         update_text(i,letters[i])
     bpy.data.objects.remove(bpy.data.objects['Text5'], do_unlink=True)
+    bpy.context.view_layer.objects.active= bpy.data.objects["cube"]
+    bpy.ops.object.select_all(action='SELECT')
+    bpy.ops.object.join()
