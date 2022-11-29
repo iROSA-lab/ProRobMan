@@ -69,6 +69,7 @@
 
   <!-- spawn cubes-->
   <node pkg="ProRobMan" name="spawn_cubes" type="spawn_cubes.py" output="screen"/>
+  <node pkg="ProRobMan" name="move_head" type="move_head.py" output="screen"/>
 
   <group if="$(arg tuck_arm)">
       <node name="tuck_arm" pkg="tiago_gazebo" type="tuck_arm.py" output="screen"/>
