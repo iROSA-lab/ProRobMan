@@ -3,8 +3,7 @@ project(ProRobMan)
 find_package(catkin REQUIRED COMPONENTS
   rospy
   gazebo_ros
+  control_msgs
+  geometry_msgs
 )
 catkin_package()
-
-add_executable(spawn_cubes scripts/spawn_cubes.py)
-target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})

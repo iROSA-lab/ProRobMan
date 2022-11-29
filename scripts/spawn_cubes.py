@@ -1,64 +1,60 @@
-from gazebo_ros import gazebo_interfae
+#!/usr/bin/env python
+import rospy
 
-cube_sdf="""
-<?xml version='1.0'?>
-<sdf version="1.4">
-  <model name=%NAME%>
-    <link name=%NAME%>
-      <inertial>
-        <mass>0.066</mass>
-        <inertia> <!-- inertias are tricky to compute -->
-          <!-- http://gazebosim.org/tutorials?tut=inertia&cat=build_robot -->
-          <ixx>0.0000221859</ixx>       <!-- for a box: ixx = 0.083 * mass * (y*y + z*z) -->
-          <ixy>0.0</ixy>         <!-- for a box: ixy = 0 -->
-          <ixz>0.0</ixz>         <!-- for a box: ixz = 0 -->
-          <iyy>0.0000221859</iyy>       <!-- for a box: iyy = 0.083 * mass * (x*x + z*z) -->
-          <iyz>0.0</iyz>         <!-- for a box: iyz = 0 -->
-          <izz>0.0000221859</izz>       <!-- for a box: izz = 0.083 * mass * (x*x + y*y) -->
-        </inertia>
-      </inertial>
-      <collision name="collision">
-        <geometry>
-          <box>
-            <size>0.045 0.045 0.045</size>
-          </box>
-        </geometry>
-      </collision>
-      <visual name="visual">
-        <geometry>
-          <box>
-            <size>0.045 0.045 0.045</size>
-          </box>
-        </geometry>
-        <material>
-            <script>
-                <uri>file://media/materials/scripts/gazebo.material</uri>
-                <name>Gazebo/%COLOR%</name>
-            </script>
-        </material>
-      </visual>
+from geometry_msgs.msg import Pose, Quaternion, Point
+from tf.transformations import quaternion_from_euler
+from gazebo_msgs.srv import SpawnModel
+import random
+
+cube_urdf="""
+<?xml version="1.0" ?>
+<robot name="%NAME%" xmlns:xacro="http://ros.org/wiki/xacro">
+    <link name="%NAME%">
+        <visual>
+            <geometry>
+              <mesh filename="package://ProRobMan/meshes/%NAME%.dae" scale='1 1 1'/>
+            </geometry>
+        </visual>
+
+        <collision>
+            <geometry>
+              <box size="0.045 0.045 0.045" />
+            </geometry>
+        </collision>
+        
+        <inertial>
+          <mass value="0.066" />
+          <inertia ixx="0.0000221859" ixy="0.0" ixz="0.0" iyy="0.0000221859" iyz="0.0" izz="0.0000221859" />
+        </inertial>
     </link>
-  </model>
-</sdf>
+
+</robot>
 """
 
-# the cubes should be above the table
-pose_z=0.5
-pose_xlim=[0.2,0.8]
-pose_ylim=[-0.35, 0.35]
-
-counter=0
-def spawn(color, positions, orientations):
-    model_name=f'cube_{counter}'
-    model_xml = cube_sdf \
-        .replace('%NAME%', model_name) \
-        .replace('%COLOR%', color)
-    initial_pose = Pose(Point(*positions), Quaternion(*quaternion_from_euler(*orientations)))
-    gazebo_interface.spawn_sdf_model_client(model_name, model_xml, rospy.get_namespace(),
-                                            initial_pose, "", "/gazebo")
-    rospy.loginfo("%s spawned in Gazebo as %s", model_name, gazebo_model_name)
-    counter+=1
-    return gazebo_model_name
-
-colors=['RED, BLUE, GREEN']
 rospy.init_node('spawn_cubes', anonymous=True)
+Spawning = rospy.ServiceProxy("gazebo/spawn_urdf_model", SpawnModel)
+rospy.wait_for_service("gazebo/spawn_urdf_model")
+
+def spawn(id, position, orientation):
+  model_name='cube_{0}'.format(id)
+  model_xml = cube_urdf.replace('%NAME%', model_name)
+  cube_pose = Pose(Point(*position), Quaternion(*quaternion_from_euler(*orientation)))
+  Spawning(model_name, model_xml, "", cube_pose, "world")
+  rospy.loginfo("%s was spawned in Gazebo", model_name)
+
+# the ranges for generating cubs
+# table size is 0.6 x 0.75
+table_xlim=[-0.15,0.2]
+table_ylim=[-0.3, 0.3]
+table_zlim=[0.1, 0.2]
+# table surface pose
+xpose=0.5
+ypose=0
+zpose=0.5
+for i in range(28):
+  position=[xpose + random.uniform(*table_xlim),
+            ypose + random.uniform(*table_ylim),
+            zpose + random.uniform(*table_zlim)
+  ]
+  orientation=[random.uniform(-0.5,0.5), random.uniform(-0.5,0.5), random.uniform(-0.5,0.5)]
+  spawn(i, position, orientation)

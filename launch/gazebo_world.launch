@@ -67,8 +67,12 @@
     <arg name="base_type" value="$(arg base_type)"/>
   </include>
 
+  <!-- spawn cubes-->
+  <node pkg="ProRobMan" name="spawn_cubes" type="spawn_cubes.py" output="screen"/>
+
   <group if="$(arg tuck_arm)">
       <node name="tuck_arm" pkg="tiago_gazebo" type="tuck_arm.py" output="screen"/>
   </group>
   <node name="image_proc" pkg="image_proc" type="image_proc" ns="xtion/rgb"/>
+
 </launch>

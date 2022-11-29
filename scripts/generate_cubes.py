@@ -5,16 +5,8 @@ def define_material(id, r, g, b):
     mat= bpy.data.materials.get(id)
     if mat is None:
         mat=bpy.data.materials.new(name=id)
-        mat.use_nodes=True
-        if mat.node_tree:
-            mat.node_tree.links.clear()
-            mat.node_tree.nodes.clear()
-    nodes=mat.node_tree.nodes
-    output = nodes.new(type='ShaderNodeOutputMaterial')
-    shader = nodes.new(type='ShaderNodeBsdfGlossy')
-    nodes["Glossy BSDF"].inputs[0].default_value = (r, g, b, 1)
-    nodes["Glossy BSDF"].inputs[1].default_value = 0
-    mat.node_tree.links.new(shader.outputs[0], output.inputs[0])
+        mat.use_nodes=False
+    mat.diffuse_color=(r, g, b, 1)
     return mat
 
 def clear_the_scene():
@@ -101,4 +93,4 @@ for c in range(28):
     bpy.context.view_layer.objects.active= bpy.data.objects["cube"]
     bpy.ops.object.select_all(action='SELECT')
     bpy.ops.object.join()
-    bpy.ops.wm.collada_export(filepath=f'meshes/cube_{c}.dae')
+    bpy.ops.wm.collada_export(filepath=f'meshes/cube_{c}.dae', export_mesh_type_selection='render', apply_modifiers=True, include_children=True)
