@@ -6,6 +6,61 @@ from tf.transformations import quaternion_from_euler
 from gazebo_msgs.srv import SpawnModel
 import random
 
+cube_sdf="""
+<?xml version="1.0" ?>
+<sdf version="1.4">
+<model name='%NAME%'>
+  <static>0</static>
+  <link name='%NAME%'>
+    <inertial>
+        <mass>0.066</mass>
+        <inertia> <!-- inertias are tricky to compute -->
+          <!-- http://gazebosim.org/tutorials?tut=inertia&cat=build_robot -->
+          <ixx>0.0000221859</ixx>       <!-- for a box: ixx = 0.083 * mass * (y*y + z*z) -->
+          <ixy>0.0</ixy>         <!-- for a box: ixy = 0 -->
+          <ixz>0.0</ixz>         <!-- for a box: ixz = 0 -->
+          <iyy>0.0000221859</iyy>       <!-- for a box: iyy = 0.083 * mass * (x*x + z*z) -->
+          <iyz>0.0</iyz>         <!-- for a box: iyz = 0 -->
+          <izz>0.0000221859</izz>       <!-- for a box: izz = 0.083 * mass * (x*x + y*y) -->
+        </inertia>
+      </inertial>
+    <collision name='collision'>
+      <geometry>
+        <box>
+          <size> 0.045 0.045 0.045 </size>
+        </box>
+      </geometry>
+      <max_contacts>10</max_contacts>
+      <surface>
+        <bounce/>
+        <friction>
+          <ode/>
+        </friction>
+        <contact>
+          <ode/>
+        </contact>
+      </surface>
+    </collision>
+    <visual name='%NAME%'>
+      <pose>0 0 0 0 -0 0</pose>
+      <cast_shadows>0</cast_shadows>
+      <geometry>
+        <mesh>
+          <uri>model://%NAME%.dae</uri>
+        </mesh>
+      </geometry>
+    </visual>
+    <velocity_decay>
+      <linear>0</linear>
+      <angular>0</angular>
+    </velocity_decay>
+    <self_collide>0</self_collide>
+    <kinematic>0</kinematic>
+    <gravity>1</gravity>
+  </link>
+</model>
+"""
+
 cube_urdf="""
 <?xml version="1.0" ?>
 <robot name="%NAME%" xmlns:xacro="http://ros.org/wiki/xacro">
@@ -30,12 +85,12 @@ cube_urdf="""
 """
 
 rospy.init_node('spawn_cubes', anonymous=True)
-Spawning = rospy.ServiceProxy("gazebo/spawn_urdf_model", SpawnModel)
-rospy.wait_for_service("gazebo/spawn_urdf_model")
+Spawning = rospy.ServiceProxy("gazebo/spawn_sdf_model", SpawnModel) # you can cange sdf to urdf
+rospy.wait_for_service("gazebo/spawn_sdf_model") # you can cange sdf to urdf
 
 def spawn(id, position, orientation):
   model_name='cube_{0}'.format(id)
-  model_xml = cube_urdf.replace('%NAME%', model_name)
+  model_xml = cube_sdf.replace('%NAME%', model_name) # you can cange sdf to urdf
   cube_pose = Pose(Point(*position), Quaternion(*quaternion_from_euler(*orientation)))
   Spawning(model_name, model_xml, "", cube_pose, "world")
   rospy.loginfo("%s was spawned in Gazebo", model_name)
