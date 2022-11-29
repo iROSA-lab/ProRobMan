@@ -10,24 +10,22 @@ cube_urdf="""
 <?xml version="1.0" ?>
 <robot name="%NAME%" xmlns:xacro="http://ros.org/wiki/xacro">
     <link name="%NAME%">
-        <visual>
-            <geometry>
-              <mesh filename="package://ProRobMan/meshes/%NAME%.dae" scale='1 1 1'/>
-            </geometry>
-        </visual>
-
+        <inertial>
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <mass value="0.066" />
+          <inertia ixx="0.0000221859" ixy="0.0" ixz="0.0" iyy="0.0000221859" iyz="0.0" izz="0.0000221859" />
+        </inertial>
         <collision>
             <geometry>
               <box size="0.045 0.045 0.045" />
             </geometry>
         </collision>
-        
-        <inertial>
-          <mass value="0.066" />
-          <inertia ixx="0.0000221859" ixy="0.0" ixz="0.0" iyy="0.0000221859" iyz="0.0" izz="0.0000221859" />
-        </inertial>
+        <visual>
+            <geometry>
+              <mesh filename="package://ProRobMan/meshes/%NAME%.dae" scale='1 1 1'/>
+            </geometry>
+        </visual>
     </link>
-
 </robot>
 """
 
@@ -44,7 +42,7 @@ def spawn(id, position, orientation):
 
 # the ranges for generating cubs
 # table size is 0.6 x 0.75
-table_xlim=[-0.2,0.25]
+table_xlim=[-0.2,0.2]
 table_ylim=[-0.3, 0.3]
 table_zlim=[0.1, 0.2]
 # table surface pose
@@ -56,5 +54,5 @@ for i in range(28):
             ypose + random.uniform(*table_ylim),
             zpose + random.uniform(*table_zlim)
   ]
-  orientation=[random.uniform(-0.5,0.5), random.uniform(-0.5,0.5), random.uniform(-0.5,0.5)]
+  orientation=[random.uniform(-0.8,0.8), random.uniform(-0.8,0.8), random.uniform(-0.8,0.8)]
   spawn(i, position, orientation)

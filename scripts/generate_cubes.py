@@ -42,11 +42,11 @@ def paint_surface(id, color, location, rotation, projection_axis):
     bpy.context.active_object.data.materials.append(color)
     bpy.context.active_object.name=f'plane_{id}'
     location=update_location(location, projection_axis)
-#    project_to_cube(projection_axis, 'cube')
+    # project_to_cube(projection_axis, 'cube')
     bpy.ops.mesh.primitive_circle_add(radius=0.02, fill_type='TRIFAN', location=location, rotation=rotation)
     bpy.context.active_object.data.materials.append(wood)
     location=update_location(location, projection_axis)
-#    project_to_cube(projection_axis, f'plane_{id}')
+    # project_to_cube(projection_axis, f'plane_{id}')
     bpy.ops.object.text_add(radius=0.03, location=location, rotation=rotation)
     bpy.context.active_object.data.materials.append(color)
     bpy.context.active_object.name=f'Text{id}'
@@ -64,22 +64,26 @@ def update_text(id, letter):
     bpy.data.objects[f'Text{id}'].data.body = letter
     bpy.data.objects[f'Text{id}'].data.align_x = 'CENTER'
     bpy.data.objects[f'Text{id}'].data.align_y = 'CENTER'
+    bpy.data.objects[f'Text{id}'].data.extrude=0.0001
     bpy.ops.object.editmode_toggle()
     convert_to_mesh(f'Text{id}')
+    bpy.ops.object.modifier_add(type='DECIMATE')
+    bpy.context.object.modifiers["Decimate"].decimate_type = 'DISSOLVE'
+    bpy.ops.object.modifier_apply(modifier="Decimate")
 
 def generate_cube():
     bpy.ops.mesh.primitive_cube_add(size=0.045, location=(0, 0, 0), rotation=(0.0, 0, 0))
     bpy.context.active_object.name='cube'
     # paint the surfaces
     red=define_material('Red', 1, 0, 0)
-    paint_surface(0, red, location=(0, 0, 0.0226), rotation=(0.0, 0, 0), projection_axis=2)
-    paint_surface(1, red, location=(0, 0, -0.0226), rotation=(0.0, 0, 0), projection_axis=2)
+    paint_surface(0, red, location=(0, 0, 0.0227), rotation=(0.0, 0, 0), projection_axis=2)
+    paint_surface(1, red, location=(0, 0, -0.0227), rotation=(0.0, 0, 0), projection_axis=2)
     blue=define_material('Blue', 0, 1, 0)
-    paint_surface(2, blue, location=(0, 0.0226, 0), rotation=(1.5708, 0, 0), projection_axis=1)
-    paint_surface(3, blue, location=(0, -0.0226, 0), rotation=(1.5708, 0, 0), projection_axis=1)
+    paint_surface(2, blue, location=(0, 0.0227, 0), rotation=(1.5708, 0, 0), projection_axis=1)
+    paint_surface(3, blue, location=(0, -0.0227, 0), rotation=(1.5708, 0, 0), projection_axis=1)
     green=define_material('Green', 0, 0, 1)
-    paint_surface(4, green, location=(0.0226, 0, 0), rotation=( 0, 1.5708, 0), projection_axis=0)
-    paint_surface(5, green, location=(-0.0226, 0, 0), rotation=( 0, 1.5708, 0), projection_axis=0)
+    paint_surface(4, green, location=(0.0227, 0, 0), rotation=( 0, 1.5708, 0), projection_axis=0)
+    paint_surface(5, green, location=(-0.0227, 0, 0), rotation=( 0, 1.5708, 0), projection_axis=0)
 
 import numpy as np
 upper_case=np.array(['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'])
@@ -93,4 +97,12 @@ for c in range(28):
     bpy.context.view_layer.objects.active= bpy.data.objects["cube"]
     bpy.ops.object.select_all(action='SELECT')
     bpy.ops.object.join()
+    bpy.ops.object.modifier_add(type='DECIMATE')
+    bpy.context.object.modifiers["Decimate"].decimate_type = 'DISSOLVE'
+    bpy.ops.object.modifier_apply(modifier="Decimate")
+    bpy.ops.object.editmode_toggle()
+    bpy.ops.mesh.select_all(action='SELECT')
+    bpy.ops.mesh.remove_doubles(threshold=0.0001)
+    bpy.ops.mesh.dissolve_limited(angle_limit=0.261799)
+    bpy.ops.object.editmode_toggle()
     bpy.ops.wm.collada_export(filepath=f'meshes/cube_{c}.dae', export_mesh_type_selection='render', apply_modifiers=True, include_children=True)
