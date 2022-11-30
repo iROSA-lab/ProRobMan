@@ -30,33 +30,15 @@ cube_sdf="""
           <size> 0.045 0.045 0.045 </size>
         </box>
       </geometry>
-      <max_contacts>10</max_contacts>
-      <surface>
-        <bounce/>
-        <friction>
-          <ode/>
-        </friction>
-        <contact>
-          <ode/>
-        </contact>
-      </surface>
     </collision>
     <visual name='%NAME%'>
-      <pose>0 0 0 0 -0 0</pose>
-      <cast_shadows>0</cast_shadows>
+      <pose>0 0 0 0 0 0</pose>
       <geometry>
         <mesh>
           <uri>model://%NAME%.dae</uri>
         </mesh>
       </geometry>
     </visual>
-    <velocity_decay>
-      <linear>0</linear>
-      <angular>0</angular>
-    </velocity_decay>
-    <self_collide>0</self_collide>
-    <kinematic>0</kinematic>
-    <gravity>1</gravity>
   </link>
 </model>
 """
