@@ -79,8 +79,8 @@ def spawn(id, position, orientation):
 
 # the ranges for generating cubs
 # table size is 0.6 x 0.75
-table_xlim=[-0.2,0.2]
-table_ylim=[-0.3, 0.3]
+table_xlim=[-0.1,0.1]
+table_ylim=[-0.2, 0.2]
 table_zlim=[0.1, 0.2]
 # table surface pose
 xpose=0.5
@@ -91,5 +91,5 @@ for i in range(28):
             ypose + random.uniform(*table_ylim),
             zpose + random.uniform(*table_zlim)
   ]
-  orientation=[random.uniform(-0.8,0.8), random.uniform(-0.8,0.8), random.uniform(-0.8,0.8)]
+  orientation=[random.uniform(-1.5,1.5), random.uniform(-1.5,1.5), random.uniform(-1.5,1.5)]
   spawn(i, position, orientation)
