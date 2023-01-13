@@ -67,8 +67,9 @@
     <arg name="base_type" value="$(arg base_type)"/>
   </include>
 
-  <!-- spawn cubes-->
+  <!-- spawn cubes -->
   <node pkg="ProRobMan" name="spawn_cubes" type="spawn_cubes.py" output="screen"/>
+  <!-- move head -->
   <node pkg="ProRobMan" name="move_head" type="move_head.py" output="screen"/>
 
   <group if="$(arg tuck_arm)">

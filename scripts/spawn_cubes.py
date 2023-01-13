@@ -40,6 +40,12 @@ cube_sdf="""
       </geometry>
     </visual>
   </link>
+  <plugin name="ground_truth" filename="libgazebo_ros_p3d.so">
+    <frameName>world</frameName>
+    <bodyName>%NAME%</bodyName>
+    <topicName>%NAME%_odom</topicName>
+    <updateRate>30.0</updateRate>
+  </plugin>
 </model>
 """
 
@@ -63,6 +69,14 @@ cube_urdf="""
             </geometry>
         </visual>
     </link>
+    <gazebo>
+      <plugin name="ground_truth" filename="libgazebo_ros_p3d.so">
+        <frameName>world</frameName>
+        <bodyName>%NAME%</bodyName>
+        <topicName>%NAME%_odom</topicName>
+        <updateRate>30.0</updateRate>
+      </plugin>
+    </gazebo>
 </robot>
 """
 
