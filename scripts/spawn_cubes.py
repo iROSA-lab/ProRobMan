@@ -25,6 +25,14 @@ cube_sdf="""
         </inertia>
       </inertial>
     <collision name='collision'>
+      <surface>
+        <friction>
+          <ode>
+          <mu>0.6</mu> 
+          <mu2>0.6</mu2>
+          </ode>
+        </friction>
+      </surface>
       <geometry>
         <box>
           <size> 0.045 0.045 0.045 </size>
@@ -70,6 +78,16 @@ cube_urdf="""
         </visual>
     </link>
     <gazebo>
+      <collision name="%NAME%_collision">
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.6</mu> 
+              <mu2>0.6</mu2>
+              </ode>
+          </friction>
+        </surface>
+      </collision>
       <plugin name="ground_truth" filename="libgazebo_ros_p3d.so">
         <frameName>world</frameName>
         <bodyName>%NAME%</bodyName>
