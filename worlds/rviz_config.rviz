@@ -7,7 +7,10 @@ Panels:
         - /Global Options1
         - /Status1
         - /DepthCloud1/Auto Size1
+        - /Odometry1
         - /Odometry1/Shape1
+        - /TF1/Frames1
+        - /TF1/Tree1
       Splitter Ratio: 0.5
     Tree Height: 752
   - Class: rviz/Selection
@@ -246,134 +249,52 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        gripper_left_base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        gripper_left_coupler_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
         gripper_left_grasping_frame:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        gripper_left_left_inner_finger:
+        gripper_left_left_finger_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        gripper_left_left_inner_finger_pad:
+        gripper_left_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        gripper_left_left_inner_knuckle:
+        gripper_left_right_finger_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        gripper_left_left_outer_finger:
+        gripper_left_tool_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
-        gripper_left_left_outer_knuckle:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        gripper_left_right_inner_finger:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        gripper_left_right_inner_finger_pad:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        gripper_left_right_inner_knuckle:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        gripper_left_right_outer_finger:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        gripper_left_right_outer_knuckle:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        gripper_right_base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        gripper_right_coupler_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
         gripper_right_grasping_frame:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        gripper_right_left_inner_finger:
+        gripper_right_left_finger_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        gripper_right_left_inner_finger_pad:
+        gripper_right_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        gripper_right_left_inner_knuckle:
+        gripper_right_right_finger_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        gripper_right_left_outer_finger:
+        gripper_right_tool_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
-        gripper_right_left_outer_knuckle:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        gripper_right_right_inner_finger:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        gripper_right_right_inner_finger_pad:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        gripper_right_right_inner_knuckle:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        gripper_right_right_outer_finger:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        gripper_right_right_outer_knuckle:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
         head_1_link:
           Alpha: 1
           Show Axes: false
@@ -529,7 +450,7 @@ Visualization Manager:
           Value: true
         Value: true
       Enabled: true
-      Keep: 100
+      Keep: 5
       Name: Odometry
       Position Tolerance: 0.10000000149011612
       Shape:
@@ -542,8 +463,294 @@ Visualization Manager:
         Shaft Length: 1
         Shaft Radius: 0.05000000074505806
         Value: Axes
-      Topic: /cube_0_odom
+      Topic: /CubePose
       Unreliable: false
+      Value: true
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 10
+        Min Value: -10
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz/PointCloud2
+      Color: 255; 255; 255
+      Color Transformer: Intensity
+      Decay Time: 0
+      Enabled: true
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Min Color: 0; 0; 0
+      Name: PointCloud2
+      Position Transformer: XYZ
+      Queue Size: 10
+      Selectable: true
+      Size (Pixels): 3
+      Size (m): 0.009999999776482582
+      Style: Flat Squares
+      Topic: /CloudFiltered
+      Unreliable: false
+      Use Fixed Frame: true
+      Use rainbow: true
+      Value: true
+    - Class: rviz/TF
+      Enabled: true
+      Frame Timeout: 15
+      Frames:
+        All Enabled: false
+        arm_left_1_link:
+          Value: false
+        arm_left_2_link:
+          Value: false
+        arm_left_3_link:
+          Value: false
+        arm_left_4_link:
+          Value: false
+        arm_left_5_link:
+          Value: false
+        arm_left_6_link:
+          Value: false
+        arm_left_7_link:
+          Value: false
+        arm_left_tool_link:
+          Value: false
+        arm_right_1_link:
+          Value: false
+        arm_right_2_link:
+          Value: false
+        arm_right_3_link:
+          Value: false
+        arm_right_4_link:
+          Value: false
+        arm_right_5_link:
+          Value: false
+        arm_right_6_link:
+          Value: false
+        arm_right_7_link:
+          Value: false
+        arm_right_tool_link:
+          Value: false
+        base_antenna_left_link:
+          Value: false
+        base_antenna_right_link:
+          Value: false
+        base_cover_link:
+          Value: false
+        base_footprint:
+          Value: true
+        base_imu_link:
+          Value: false
+        base_laser_link:
+          Value: false
+        base_link:
+          Value: false
+        base_mic_back_left_link:
+          Value: false
+        base_mic_back_right_link:
+          Value: false
+        base_mic_front_left_link:
+          Value: false
+        base_mic_front_right_link:
+          Value: false
+        base_sonar_01_link:
+          Value: false
+        base_sonar_02_link:
+          Value: false
+        base_sonar_03_link:
+          Value: false
+        caster_back_left_1_link:
+          Value: false
+        caster_back_left_2_link:
+          Value: false
+        caster_back_right_1_link:
+          Value: false
+        caster_back_right_2_link:
+          Value: false
+        caster_front_left_1_link:
+          Value: false
+        caster_front_left_2_link:
+          Value: false
+        caster_front_right_1_link:
+          Value: false
+        caster_front_right_2_link:
+          Value: false
+        gripper_left_grasping_frame:
+          Value: false
+        gripper_left_left_finger_link:
+          Value: false
+        gripper_left_link:
+          Value: false
+        gripper_left_right_finger_link:
+          Value: false
+        gripper_left_tool_link:
+          Value: false
+        gripper_right_grasping_frame:
+          Value: false
+        gripper_right_left_finger_link:
+          Value: false
+        gripper_right_link:
+          Value: false
+        gripper_right_right_finger_link:
+          Value: false
+        gripper_right_tool_link:
+          Value: false
+        head_1_link:
+          Value: false
+        head_2_link:
+          Value: false
+        odom:
+          Value: false
+        rgbd_laser_link:
+          Value: false
+        suspension_left_link:
+          Value: false
+        suspension_right_link:
+          Value: false
+        torso_fixed_column_link:
+          Value: false
+        torso_fixed_link:
+          Value: false
+        torso_lift_link:
+          Value: false
+        wheel_left_link:
+          Value: false
+        wheel_right_link:
+          Value: false
+        world:
+          Value: false
+        wrist_left_ft_link:
+          Value: false
+        wrist_left_ft_tool_link:
+          Value: false
+        wrist_right_ft_link:
+          Value: false
+        wrist_right_ft_tool_link:
+          Value: false
+        xtion_depth_frame:
+          Value: false
+        xtion_depth_optical_frame:
+          Value: false
+        xtion_link:
+          Value: false
+        xtion_optical_frame:
+          Value: false
+        xtion_orbbec_aux_joint_frame:
+          Value: false
+        xtion_rgb_frame:
+          Value: false
+        xtion_rgb_optical_frame:
+          Value: false
+      Marker Scale: 1
+      Name: TF
+      Show Arrows: true
+      Show Axes: true
+      Show Names: false
+      Tree:
+        odom:
+          base_footprint:
+            base_cover_link:
+              {}
+            base_link:
+              base_antenna_left_link:
+                {}
+              base_antenna_right_link:
+                {}
+              base_imu_link:
+                {}
+              base_laser_link:
+                {}
+              base_mic_back_left_link:
+                {}
+              base_mic_back_right_link:
+                {}
+              base_mic_front_left_link:
+                {}
+              base_mic_front_right_link:
+                {}
+              base_sonar_01_link:
+                {}
+              base_sonar_02_link:
+                {}
+              base_sonar_03_link:
+                {}
+              caster_back_left_1_link:
+                caster_back_left_2_link:
+                  {}
+              caster_back_right_1_link:
+                caster_back_right_2_link:
+                  {}
+              caster_front_left_1_link:
+                caster_front_left_2_link:
+                  {}
+              caster_front_right_1_link:
+                caster_front_right_2_link:
+                  {}
+              suspension_left_link:
+                wheel_left_link:
+                  {}
+              suspension_right_link:
+                wheel_right_link:
+                  {}
+              torso_fixed_column_link:
+                {}
+              torso_fixed_link:
+                torso_lift_link:
+                  arm_left_1_link:
+                    arm_left_2_link:
+                      arm_left_3_link:
+                        arm_left_4_link:
+                          arm_left_5_link:
+                            arm_left_6_link:
+                              arm_left_7_link:
+                                arm_left_tool_link:
+                                  wrist_left_ft_link:
+                                    wrist_left_ft_tool_link:
+                                      gripper_left_link:
+                                        gripper_left_grasping_frame:
+                                          {}
+                                        gripper_left_left_finger_link:
+                                          {}
+                                        gripper_left_right_finger_link:
+                                          {}
+                                      gripper_left_tool_link:
+                                        {}
+                  arm_right_1_link:
+                    arm_right_2_link:
+                      arm_right_3_link:
+                        arm_right_4_link:
+                          arm_right_5_link:
+                            arm_right_6_link:
+                              arm_right_7_link:
+                                arm_right_tool_link:
+                                  wrist_right_ft_link:
+                                    wrist_right_ft_tool_link:
+                                      gripper_right_link:
+                                        gripper_right_grasping_frame:
+                                          {}
+                                        gripper_right_left_finger_link:
+                                          {}
+                                        gripper_right_right_finger_link:
+                                          {}
+                                      gripper_right_tool_link:
+                                        {}
+                  head_1_link:
+                    head_2_link:
+                      xtion_link:
+                        xtion_optical_frame:
+                          {}
+                        xtion_orbbec_aux_joint_frame:
+                          xtion_rgb_frame:
+                            xtion_depth_frame:
+                              xtion_depth_optical_frame:
+                                {}
+                            xtion_rgb_optical_frame:
+                              {}
+            rgbd_laser_link:
+              {}
+            world:
+              {}
+      Update Interval: 0
       Value: true
   Enabled: true
   Global Options:
@@ -573,7 +780,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 1.8876514434814453
+      Distance: 1.7992368936538696
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -588,10 +795,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.0653977394104004
+      Pitch: 0.6953970789909363
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 6.053592205047607
+      Yaw: 0.3704143464565277
     Saved: ~
 Window Geometry:
   Displays:
@@ -609,5 +816,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1920
-  X: 0
+  X: 1920
   Y: 0
