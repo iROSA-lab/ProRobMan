@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>
+  <arg name="world"  default="exp"/>
+  
+  <arg name="extra_gazebo_args" default=""/>
+  <arg name="gui" default="true"/>
+  <arg name="debug" default="false"/>
+  <arg name="recording" default="false"/>
+
+  <env name="LC_NUMERIC" value="C" />
+
+  <!-- start up world -->
+  <arg name="paused" default="false"/>
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <!-- world_name is relative to directories in GAZEBO_RESOURCE_PATH-->
+    <arg name="world_name" value="$(find ProRobMan)/worlds/$(arg world).world"/>
+    <arg name="extra_gazebo_args" value="$(arg extra_gazebo_args)"/>
+    <arg name="gui" value="$(arg gui)"/>
+    <arg name="debug" value="$(arg debug)"/>
+    <arg name="recording" value="$(arg recording)"/>
+    <arg name="paused" value="$(arg paused)"/>
+  </include>
+
+  <!-- spawn robot in simulation -->
+  <include file="$(find franka_gazebo)/launch/panda.launch">
+    <arg name="gazebo"  value="false"/>
+    <arg name="x"           default="0"     doc="How far forward to place the base of the robot in [m]?" />
+    <arg name="y"           default="0"     doc="How far leftwards to place the base of the robot in [m]?" />
+    <arg name="z"           default="0.45"     doc="How far upwards to place the base of the robot in [m]?" />
+    <arg name="roll"        default="0"     doc="How much to rotate the base of the robot around its X-axis in [rad]?" />
+    <arg name="pitch"       default="0"     doc="How much to rotate the base of the robot around its Y-axis in [rad]?" />
+    <arg name="yaw"         default="0"     doc="How much to rotate the base of the robot around its Z-axis in [rad]?" />
+  </include>
+
+  <!-- bring up moveit? -->
+  <!-- <include file="$(find tiago_dual_gazebo)/launch/simulation_tiago_dual_bringup.launch">
+    <arg name="arm_left"  value="$(arg arm_left)"/>
+    <arg name="arm_right"  value="$(arg arm_right)"/>
+    <arg name="end_effector_left"  value="$(arg end_effector_left)"/>
+    <arg name="end_effector_right"  value="$(arg end_effector_right)"/>
+    <arg name="ft_sensor_left"  value="$(arg ft_sensor_left)"/>
+    <arg name="ft_sensor_right"  value="$(arg ft_sensor_right)"/>
+    <arg name="laser_model" value="$(arg laser_model)"/>
+    <arg name="camera_model" value="$(arg camera_model)"/>
+    <arg name="public_sim"  value="$(arg public_sim)"/>
+    <arg name="use_moveit_camera" value="$(arg use_moveit_camera)"/>
+    <arg name="base_type" value="$(arg base_type)"/>
+  </include> -->
+
+  <!-- tf -->
+  <node pkg="tf" name="map2base_1" type="static_transform_publisher" args="0.0 0.0 0.0 0.0 0.0 0.0 base_footprint world 100"/>
+
+  <!-- spawn cubes -->
+  <node pkg="ProRobMan" name="spawn_cubes" type="spawn_cubes.py" output="screen"/>
+
+  <!-- <node name="image_proc" pkg="image_proc" type="image_proc" ns="xtion/rgb"/> -->
+
+</launch>
